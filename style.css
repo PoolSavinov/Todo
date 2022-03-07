@@ -1,0 +1,7 @@
+.checked {
+    background-color: rgba(131, 245, 131, 0.459);
+}
+
+.completed-visible {
+    display: none;
+}
