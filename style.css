@@ -5,3 +5,11 @@
 .completed-visible {
     display: none;
 }
+
+.visible {
+    display: flex;
+}
+
+.unvisible {
+    display: none;
+}

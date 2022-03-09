@@ -2,25 +2,25 @@ const tasks = [{
         _id: '5d2ca9e2e03d40b326596aa7',
         completed: true,
         body: 'Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n',
-        title: 'Eu ea incididunt sunt consectetur fugiat non.',
+        title: '1',
     },
     {
         _id: '5d2ca9e29c8a94095c1288e0',
         completed: false,
         body: 'Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n',
-        title: 'Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.',
+        title: '2',
     },
     {
         _id: '5d2ca9e2e03d40b3232496aa7',
         completed: true,
         body: 'Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n',
-        title: 'Eu ea incididunt sunt consectetur fugiat non.',
+        title: '3',
     },
     {
         _id: '5d2ca9e29c8a94095564788e0',
         completed: false,
         body: 'Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n',
-        title: 'Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.',
+        title: '4',
     },
 ];
 
@@ -41,11 +41,15 @@ const tasks = [{
     const inputTitle = form.elements["title"];
     const inputBody = form.elements["body"];
     createMessage();
+    const btmVisibleAll = document.querySelector(".btm-visible-all");
+    const btmVisibleUnfinished = document.querySelector(".btm-visible-unfinished");
     // События
     renderAllTasks(objOfTasks);
     form.addEventListener("submit", onFormSubmitHeandler);
     listContainer.addEventListener("click", onDeleteHandler);
     listContainer.addEventListener("click", checkTask);
+    btmVisibleAll.addEventListener("click", btmVisibleAllHandler);
+    btmVisibleUnfinished.addEventListener("click", btmVisibleUnfinishedHandler);
 
 
     function renderAllTasks(taskList) {
@@ -77,7 +81,7 @@ const tasks = [{
 
     function listItemTemlate({ _id, title, body } = {}) {
         const li = document.createElement("li");
-        li.classList.add("list-group-item", "d-flex", "flex-column", "flex-wrap", "mt-2");
+        li.classList.add("list-group-item", "flex-column", "flex-wrap", "mt-2", "visible");
         li.setAttribute("data-task-id", _id);
         const span = document.createElement("span");
         span.textContent = title;
@@ -213,5 +217,55 @@ const tasks = [{
         };
     };
 
+    function collectAllLiHtml() {
+        const nodeListLi = document.querySelectorAll(".list-group-item");
+        return nodeListLi
+    };
 
+    function collectTaskIdUnfinished() {
+        const id = [];
+        Object.values(objOfTasks).forEach(values => {
+            if (!values.completed) {
+                id.push(values._id);
+            }
+        });
+        return id
+    };
+
+    function collectTaskIdFinished() {
+        const id = [];
+        Object.values(objOfTasks).forEach(values => {
+            if (values.completed) {
+                id.push(values._id);
+            }
+        });
+        return id
+    }
+
+    function btmVisibleAllHandler(e) {
+        e.preventDefault();
+        collectAllLiHtml().forEach(li => {
+            li.classList.add("visible")
+            li.classList.remove("unvisible");
+        });
+    };
+
+    function btmVisibleUnfinishedHandler(e) {
+        e.preventDefault();
+        const arrLiFinished = [];
+        const taskFinished = collectTaskIdFinished();
+        const taskAll = collectAllLiHtml();
+        taskAll.forEach(li => {
+            taskFinished.forEach(id => {
+                if (li.dataset.taskId === id) {
+                    arrLiFinished.push(li)
+                };
+            });
+        });
+        arrLiFinished.forEach(li => {
+            li.classList.remove("visible");
+            li.classList.add("unvisible");
+        });
+
+    };
 })(tasks);
