@@ -66,10 +66,10 @@ const tasks = [{
         });
         // Добавление фрагмента в DOM
         listContainer.appendChild(fragment);
-        collectHtmlTask(arrLi)
+        collectHtmlTaskFromObj(arrLi)
     };
 
-    function collectHtmlTask(arrLi) {
+    function collectHtmlTaskFromObj(arrLi) {
         arrLi.forEach(li => {
 
         })
